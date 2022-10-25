@@ -8,7 +8,7 @@ public class Main {
         YearReportData yearReportData = new YearReportData();
         YearReport yearReport = new YearReport();
         YearMonthCollation yearMonthCollation = new YearMonthCollation();
-        System.out.println(1111);
+
         while (true) {
             printMenu();
             int command = scanner.nextInt();
