@@ -2,66 +2,48 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class MonthlyReport {
-    MonthReportsData reportBase = new MonthReportsData();
-    ArrayList<String> monthsNames = new ArrayList<>();
+    HashMap<Integer, ArrayList<MonthItem>> monthsFilesData;
+    String[] monthNames = {"Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"};
 
     void makeReport() {
-        HashMap<Integer, ArrayList<MonthItem>> monthReportData = reportBase.getMonthReportData();
-        MonthReportsData reportBase = new MonthReportsData();
-        for (int i = 1; i <= monthReportData.size(); i++) {
-            ArrayList<MonthItem> dataForReports = monthReportData.get(i);
-            if (reportBase.monthData == null) {
-                System.out.println("Сначала надо считать отчет! Это кнопка 1");
-                return;
-            } else {
-                {
-                    System.out.println("В месяце: " + getMonthNames(i));
-                    mostProfitItem(dataForReports);
-                    maxExpensiveItem(dataForReports);
-                }
-            }
-        }
-    }
-
-    void mostProfitItem(ArrayList<MonthItem> dataForReports) {
-        int profit = 0;
-        int mostProfitItem;
-        String mostProfitItemName = "";
-        if (dataForReports == null) {
+        if (monthsFilesData == null) {
             System.out.println("Сначала надо считать отчет! Это кнопка 1");
             return;
         }
-        for (int i = 1; i < dataForReports.size(); i++) {
-            if (!dataForReports.get(i).isExpense) {
-                mostProfitItem = dataForReports.get(i).quantity * dataForReports.get(i).sumOfOne;
-                if (mostProfitItem > profit) {
-                    profit = mostProfitItem;
-                    mostProfitItemName = dataForReports.get(i).itemName;
-                }
-
-            }
+        for (int i = 1; i <= monthsFilesData.size(); i++) {
+            ArrayList<MonthItem> dataForReports = monthsFilesData.get(i);
+            System.out.println("В месяце: " + monthNames[i - 1]);
+            mostProfitExpensiveItem(dataForReports);
+            // maxExpensiveItem(dataForReports);
         }
-        System.out.println("Самый прибыльный товар: " + mostProfitItemName + "." + " Выручка составила: " + profit + "руб.");
-
     }
 
-    void maxExpensiveItem(ArrayList<MonthItem> dataForReports) {
+    void mostProfitExpensiveItem(ArrayList<MonthItem> dataForReports) {
+        int profit = 0;
         int expense = 0;
+        int mostProfitItem;
         int maxExpense;
-        String maxExpensiveItemName = "";
+        String itemName = "";
         for (MonthItem dataForReport : dataForReports) {
-            if (dataForReport.isExpense) {
+            if (!dataForReport.isExpense) {
+                mostProfitItem = dataForReport.quantity * dataForReport.sumOfOne;
+                if (mostProfitItem > profit) {
+                    profit = mostProfitItem;
+                    itemName = dataForReport.itemName;
+                }
+            } else {
                 maxExpense = dataForReport.quantity * dataForReport.sumOfOne;
                 if (maxExpense > expense) {
                     expense = maxExpense;
-                    maxExpensiveItemName = dataForReport.itemName;
+                    itemName = dataForReport.itemName;
                 }
-
             }
         }
-        System.out.println("Самая большая трата: " + maxExpensiveItemName + " " + expense + "руб.");
+        System.out.println("Самый прибыльный товар: " + itemName + "." + " Выручка составила: " + profit + "руб.");
+        System.out.println("Самая большая трата: " + itemName + " " + expense + "руб.");
     }
 
+    // Здесь так и не придумал, как это в один объединить :(
     int sumOfMonthExpenses(ArrayList<MonthItem> dataForSums) {
         int sumExpense = 0;
         for (MonthItem dataForSum : dataForSums) {
@@ -81,21 +63,7 @@ public class MonthlyReport {
         }
         return sumProfit;
     }
-
-    String getMonthNames(int numberOfMonth) {
-        monthsNames.add("Январь");
-        monthsNames.add("Февраль");
-        monthsNames.add("Март");
-        monthsNames.add("Апрель");
-        monthsNames.add("Май");
-        monthsNames.add("Июнь");
-        monthsNames.add("Июль");
-        monthsNames.add("Август");
-        monthsNames.add("Сентябрь");
-        monthsNames.add("Октябрь");
-        monthsNames.add("Ноябрь");
-        monthsNames.add("Декабрь");
-        return monthsNames.get(numberOfMonth - 1);
+    void readMonthsFiles() {monthsFilesData = MonthsFilesReader.getMonthReportData();
     }
 
 

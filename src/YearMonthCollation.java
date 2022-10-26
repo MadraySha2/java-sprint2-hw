@@ -2,45 +2,29 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class YearMonthCollation {
-    MonthReportsData reportBase = new MonthReportsData();
-    YearReportData yearReportData = new YearReportData();
-    ArrayList<String> monthsNames = new ArrayList<>();
     MonthlyReport monthlyReport = new MonthlyReport();
+    String[] monthNames = {"Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"};
 
-    void getCollationReport() {
-        HashMap<Integer, ArrayList<MonthItem>> monthReportData = reportBase.getMonthReportData();
-        HashMap<String, ArrayList<YearItem>> yearReport = yearReportData.getYearData();
-        ArrayList<YearItem> yearProfitsList = yearReport.get("profits");
-        ArrayList<YearItem> yearExpensesList = yearReport.get("expenses");
-        for (int i = 1; i <= monthReportData.size(); i++) {
-            ArrayList<MonthItem> dataForSumExpProf = monthReportData.get(i);
-            if (yearProfitsList.get(i - 1).amount != monthlyReport.sumOfMonthProfits(dataForSumExpProf) ||
-                    yearExpensesList.get(i - 1).amount != monthlyReport.sumOfMonthExpenses(dataForSumExpProf)) {
-                System.out.println("Ошибка! Месяц " + getMonthNames(i) + " не сходится с годовым отчетом!");
+    void getCollationReport(HashMap<Integer, ArrayList<MonthItem>> monthsFilesData, HashMap<String, ArrayList<YearItem>> yearFilesData) {
+        if (yearFilesData == null) {
+            System.out.println("Сначала надо считать отчеты! Это кнопка 1 для месячного отчета и кнопка 2 для годового");
+            return;
+        } else if (monthsFilesData == null) {
+            System.out.println("Сначала надо считать отчеты! Это кнопка 1 для месячного отчета и кнопка 2 для годового111111");
+            return;
+        }
+        ArrayList<YearItem> yearProfitsList = yearFilesData.get("profits");
+        ArrayList<YearItem> yearExpensesList = yearFilesData.get("expenses");
+        for (int i = 1; i <= monthsFilesData.size(); i++) {
+            ArrayList<MonthItem> dataForSums = monthsFilesData.get(i);
+            if (yearProfitsList.get(i - 1).amount != monthlyReport.sumOfMonthProfits(dataForSums) ||
+                    yearExpensesList.get(i - 1).amount != monthlyReport.sumOfMonthExpenses(dataForSums)) {
+                System.out.println("Ошибка! Месяц " + monthNames[i - 1] + " не сходится с годовым отчетом!");
                 return;
             } else {
-                System.out.println("Все в норме! Отчет за " + getMonthNames(i) + " сходится с годовым! Возьмите с полки пирожок :)");
+                System.out.println("Все в норме! Отчет за " + monthNames[i - 1] + " сходится с годовым! Возьмите с полки пирожок :)");
             }
-
         }
-
     }
-
-
-    String getMonthNames(int numberOfMonth) {
-        monthsNames.add("Январь");
-        monthsNames.add("Февраль");
-        monthsNames.add("Март");
-        monthsNames.add("Апрель");
-        monthsNames.add("Май");
-        monthsNames.add("Июнь");
-        monthsNames.add("Июль");
-        monthsNames.add("Август");
-        monthsNames.add("Сентябрь");
-        monthsNames.add("Октябрь");
-        monthsNames.add("Ноябрь");
-        monthsNames.add("Декабрь");
-        return monthsNames.get(numberOfMonth - 1);
-    }
-
 }
+

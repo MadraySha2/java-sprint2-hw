@@ -4,34 +4,29 @@ public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         MonthlyReport monthlyReport = new MonthlyReport();
-        MonthReportsData monthReportsData = new MonthReportsData();
-        YearReportData yearReportData = new YearReportData();
         YearReport yearReport = new YearReport();
         YearMonthCollation yearMonthCollation = new YearMonthCollation();
-
         while (true) {
             printMenu();
             int command = scanner.nextInt();
             if (command == 1) {
-                monthReportsData.getMonthReportData();
+                monthlyReport.readMonthsFiles();
             } else if (command == 2) {
-                yearReportData.getYearData();
+                yearReport.readYearFiles();
             } else if (command == 3) {
                 monthlyReport.makeReport();
+
             } else if (command == 4) {
                 yearReport.makeYearReport();
             } else if (command == 5) {
-                yearMonthCollation.getCollationReport();
+                yearMonthCollation.getCollationReport(monthlyReport.monthsFilesData, yearReport.yearFilesData);
             } else if (command == 1111) {
                 System.out.println("Выход");
                 break;
             } else {
                 System.out.println("Введена некорректная команда, либо неправильный пин!");
             }
-
         }
-
-
     }
 
     static void printMenu() {

@@ -1,20 +1,23 @@
 import java.util.ArrayList;
 import java.util.HashMap;
 
-class MonthReportsData {
-    HashMap<Integer, ArrayList<MonthItem>> monthData = new HashMap<>();
-    HashMap<Integer, ArrayList<MonthItem>> getMonthReportData() {
+class MonthsFilesReader {
+
+    static HashMap<Integer, ArrayList<MonthItem>> getMonthReportData() {
+        HashMap<Integer, ArrayList<MonthItem>> monthData = new HashMap<>();
         for (int i = 1; i <= 12; i++) {
             ArrayList<MonthItem> itemsList = new ArrayList<>();
             ReadFileConnectionOrNull fileReader = new ReadFileConnectionOrNull();
             String path = "resources/m.20210" + i + ".csv";
-            String fileContents = fileReader.readFileConnectionOrNull(path);
+            if (i > 10) {
+                path = "resources/m.2021" + i + ".csv";
+            }
+            String fileContents = fileReader.readFile(path);
             if (fileContents == null) {
                 System.out.println("Обработанно и сохраненно: " + (monthData.size()) + " отчетов");
                 return monthData;
             } else {
                 String[] lines = fileContents.split(System.lineSeparator());
-
                 for (int j = 1; j < lines.length; j++) {
                     String line = lines[j];
                     String[] items = line.split(",");
